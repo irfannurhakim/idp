@@ -3,15 +3,18 @@ package idp
 
 import (
 	"encoding/gob"
+
 	jwt "github.com/dgrijalva/jwt-go"
 	// "github.com/gorilla/sessions"
-	hclient "github.com/ory-am/hydra/client"
 	"net/http"
 	"time"
+
+	hclient "github.com/ory-am/hydra/client"
 )
 
 const (
-	SessionCookieName = "challenge"
+	SessionCookieName = "NF_CENTRAL_AUTH_SESSION"
+	SessionKeyName    = "challenge"
 )
 
 type Challenge struct {
@@ -47,7 +50,7 @@ func (c *Challenge) Save(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	session.Options = c.idp.createChallengeCookieOptions
-	session.Values[SessionCookieName] = c
+	session.Values[SessionKeyName] = c
 
 	return c.idp.config.ChallengeStore.Save(r, w, session)
 }
@@ -60,7 +63,7 @@ func (c *Challenge) Update(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	session.Options = c.idp.createChallengeCookieOptions
-	session.Values[SessionCookieName] = c
+	session.Values[SessionKeyName] = c
 
 	return c.idp.config.ChallengeStore.Save(r, w, session)
 }
