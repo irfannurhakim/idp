@@ -116,10 +116,10 @@ func (c *Challenge) GrantAccessToAll(w http.ResponseWriter, r *http.Request) err
 	}
 
 	// Delete the cookie
-	err = c.Delete(w, r)
-	if err != nil {
-		return err
-	}
+	// err = c.Delete(w, r)
+	// if err != nil {
+	// 	return err
+	// }
 
 	// All this work might have taken too long (fetching key may be time consuming)
 	// so check token expiration
