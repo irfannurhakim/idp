@@ -23,8 +23,6 @@ func ClientInfoKey(clientID string) string {
 	return "ClientInfo:" + clientID
 }
 
-var encryptionkey = "something-very-secret"
-
 // Identity Provider's options
 type IDPConfig struct {
 	// Client id issued by Hydra
@@ -81,13 +79,13 @@ func NewIDP(config *IDPConfig) *IDP {
 	idp.createChallengeCookieOptions = new(sessions.Options)
 	idp.createChallengeCookieOptions.Path = "/"
 	idp.createChallengeCookieOptions.MaxAge = int(config.ChallengeExpiration.Seconds())
-	idp.createChallengeCookieOptions.Secure = true // Send only via https
+	idp.createChallengeCookieOptions.Secure = false // Send only via https
 	idp.createChallengeCookieOptions.HttpOnly = false
 
 	idp.deleteChallengeCookieOptions = new(sessions.Options)
 	idp.deleteChallengeCookieOptions.Path = "/"
-	idp.deleteChallengeCookieOptions.MaxAge = -1   // Mark for deletion
-	idp.deleteChallengeCookieOptions.Secure = true // Send only via https
+	idp.deleteChallengeCookieOptions.MaxAge = -1    // Mark for deletion
+	idp.deleteChallengeCookieOptions.Secure = false // Send only via https
 	idp.deleteChallengeCookieOptions.HttpOnly = false
 
 	return idp
@@ -335,7 +333,7 @@ func (idp *IDP) GetChallenge(r *http.Request) (*Challenge, error) {
 		return nil, err
 	}
 
-	challenge, ok := session.Values[SessionCookieName].(*Challenge)
+	challenge, ok := session.Values[SessionKeyName].(*Challenge)
 	if !ok {
 		return nil, ErrorBadChallengeCookie
 	}
