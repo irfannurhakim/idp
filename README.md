@@ -103,7 +103,7 @@ func HandleConsentGET(w http.ResponseWriter, r *http.Request) {
 
 func HandleConsentPOST(w http.ResponseWriter, r *http.Request) {
 	// 0. Get the Challenge from the cookie
-	challenge, err := model.IDP.GetChallenge(c.Request)
+	challenge, err := IDP.GetChallenge(c.Request)
 	//    Return on error
 
     // 1. Parse and validate consent data (eg. form answer=y or list of scopes)
