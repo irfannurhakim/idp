@@ -284,14 +284,7 @@ func (idp *IDP) getClient(clientID string) (*hclient.Client, error) {
 }
 
 // Create a new Challenge. The request will contain all the necessary information from Hydra, passed in the URL.
-func (idp *IDP) NewChallenge(r *http.Request, user string) (challenge *Challenge, err error) {
-	tokenStr := r.FormValue("challenge")
-	if tokenStr == "" {
-		// No challenge token
-		err = ErrorBadRequest
-		return
-	}
-
+func (idp *IDP) NewChallenge(tokenStr string, user string) (challenge *Challenge, err error) {
 	token, err := idp.getChallengeToken(tokenStr)
 	if err != nil {
 		// Most probably, token can't be verified or parsed
