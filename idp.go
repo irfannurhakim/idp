@@ -94,32 +94,14 @@ func NewIDP(config *IDPConfig) *IDP {
 func (idp *IDP) cacheConsentKey() error {
 	consentKey, err := idp.downloadConsentKey()
 
-	duration := cache.DefaultExpiration
-	if err != nil {
-		// re-cache the result even if there's an error, but
-		// do it with a shorter timeout. This will ensure we
-		// try to refresh the key once that timeout expires,
-		// otherwise we'll _never_ refresh the key again.
-		duration = idp.config.CacheCleanupInterval
-	}
-
-	idp.cache.Set(ConsentPrivateKey, consentKey, duration)
+	idp.cache.Set(ConsentPrivateKey, consentKey, cache.NoExpiration)
 	return err
 }
 
 func (idp *IDP) cacheVerificationKey() error {
 	verifyKey, err := idp.downloadVerificationKey()
 
-	duration := cache.DefaultExpiration
-	if err != nil {
-		// re-cache the result even if there's an error, but
-		// do it with a shorter timeout. This will ensure we
-		// try to refresh the key once that timeout expires,
-		// otherwise we'll _never_ refresh the key again.
-		duration = idp.config.CacheCleanupInterval
-	}
-
-	idp.cache.Set(VerifyPublicKey, verifyKey, duration)
+	idp.cache.Set(VerifyPublicKey, verifyKey, cache.NoExpiration)
 	return err
 }
 

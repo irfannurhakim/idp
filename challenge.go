@@ -62,7 +62,7 @@ func (c *Challenge) Update(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	session.Options = c.idp.createChallengeCookieOptions
+	//session.Options = c.idp.createChallengeCookieOptions
 	session.Values[SessionKeyName] = c
 
 	return c.idp.config.ChallengeStore.Save(r, w, session)
